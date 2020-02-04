@@ -27,28 +27,24 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
-    fun signin() {
+    private fun signin() {
         auth.signInWithEmailAndPassword(emaileditText.text.toString(), passwordeditText.text.toString())
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser
                     updateUI(user)
                 } else {
-                    // If sign in fails, display a message to the user.
-                    Toast.makeText(baseContext, getString(R.string.failed_authentication),
-                        Toast.LENGTH_SHORT).show()
-                    Toast.makeText(this, getString(R.string.mail_mdp_incorr), Toast.LENGTH_LONG).show()
+                    updateUI(null)
                 }
             }
     }
     //Change UI according to user data.
-    fun updateUI(account: FirebaseUser?) {
-        if (account != null ) {
-            Toast.makeText(this, getString(R.string.signed_in) + account?.uid, Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, MainActivity::class.java))
+    private fun updateUI(user: FirebaseUser?) {
+        if (user != null ) {
+            Toast.makeText(this, getString(R.string.signed_in) + user.uid, Toast.LENGTH_LONG).show()
+            startActivity(Intent(this, WritePostActivity::class.java))
         } else {
-            Toast.makeText(this, getString(R.string.existing_account), Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.mail_mdp_incorr), Toast.LENGTH_LONG).show()
         }
     }
 

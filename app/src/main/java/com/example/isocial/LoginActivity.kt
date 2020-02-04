@@ -8,7 +8,10 @@ import com.google.firebase.auth.FirebaseUser
 import android.widget.Toast
 import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_sign_in.*
+import kotlinx.android.synthetic.main.activity_sign_in.emaileditText
+import kotlinx.android.synthetic.main.activity_sign_in.passwordeditText
+import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.*
 
 
@@ -20,7 +23,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        setContentView(R.layout.activity_sign_in)
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
@@ -28,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
             signin()
         }
 
-        signupbutton.setOnClickListener {
+        subscribebutton.setOnClickListener {
             signup()
         }
     }
