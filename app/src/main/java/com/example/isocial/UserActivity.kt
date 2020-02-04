@@ -15,7 +15,6 @@ class UserActivity : AppCompatActivity() {
             val user: User = intent.getParcelableExtra("user")
             if (user != null) { // tu peux manipuler user !
                 textViewName.text = "${user.firstName} ${user.lastName}"
-                textViewAge.text = "${user.age} ans"
             }
         }
     }

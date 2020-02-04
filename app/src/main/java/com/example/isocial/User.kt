@@ -2,13 +2,30 @@ package com.example.isocial
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.util.*
+import kotlin.collections.ArrayList
 
-class User(var lastName: String?, var firstName: String?, var age: Int?) : Parcelable {
+class User(
+    var userID: String?,
+    var email: String?,
+    var lastName: String?,
+    var firstName: String?,
+    var birthDate: String?,
+    var lastConn: String?,
+    var dateCreate: String? = Date().toString()
+
+) : Parcelable {
 
     override fun writeToParcel(p0: Parcel?, p1: Int) {
+
+        p0?.writeString(userID)
+        p0?.writeString(email)
         p0?.writeString(lastName)
         p0?.writeString(firstName)
-       p0?.writeInt(age ?: 0)
+        p0?.writeString(birthDate)
+        p0?.writeString(lastConn)
+        p0?.writeString(dateCreate)
+
     }
 
     override fun describeContents(): Int {
@@ -18,9 +35,13 @@ class User(var lastName: String?, var firstName: String?, var age: Int?) : Parce
     companion object CREATOR : Parcelable.Creator<User> {
         override fun createFromParcel(parcel: Parcel): User {
             return User(
+                userID = parcel.readString(),
+                email = parcel.readString(),
                 lastName = parcel.readString(),
                 firstName = parcel.readString(),
-                age = parcel.readInt()
+                birthDate = parcel.readString(),
+                lastConn = parcel.readString(),
+                dateCreate = parcel.readString()
             )
         }
 
