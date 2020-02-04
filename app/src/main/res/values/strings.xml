@@ -6,4 +6,9 @@
     <string name="s_inscrire">S\'inscrire</string>
     <string name="adresse_mail">Adresse mail</string>
     <string name="mot_de_passe">Mot de passe</string>
+    <string name="existing_acc">Compte existant</string>
+    <string name="hello_">Bonjour !</string>
+    <string name="log_fail">E-mail ou mot de passe incorrect</string>
+    <string name="signup_fail">Erreur d\'inscription</string>
+    <string name="auth_fail">Authentication failed.</string>
 </resources>
