@@ -2,4 +2,8 @@
     <string name="app_name">iSocial</string>
     <string name="hello">Hello World!</string>
     <string name="co">Connexion</string>
+    <string name="se_connecter">Se connecter</string>
+    <string name="s_inscrire">S\'inscrire</string>
+    <string name="adresse_mail">Adresse mail</string>
+    <string name="mot_de_passe">Mot de passe</string>
 </resources>
