@@ -28,4 +28,7 @@
     <string name="nom">Nom</string>
     <string name="date_de_naissance">Date de naissance</string>
     <string name="j_ai_un_compte">J\'ai un compte</string>
+    <string name="Name">Name</string>
+    <string name="Content">Content</string>
+    <string name="age">Age</string>
 </resources>
