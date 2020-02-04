@@ -10,8 +10,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        private lateinit var auth: FirebaseAuth
+        //private lateinit var auth: FirebaseAuth
         // Initialize Firebase Auth
-        auth = FirebaseAuth.getInstance()
+       // auth = FirebaseAuth.getInstance()
     }
 }

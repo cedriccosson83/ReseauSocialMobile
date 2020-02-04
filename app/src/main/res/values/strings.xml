@@ -2,4 +2,6 @@
     <string name="app_name">iSocial</string>
     <string name="hello">Hello World!</string>
     <string name="co">Connexion</string>
+    <string name="Name">Name</string>
+    <string name="Content">Content</string>
 </resources>

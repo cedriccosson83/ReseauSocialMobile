@@ -11,8 +11,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".ProfileActivity"></activity>
-        <activity android:name=".FeedActivitity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".FeedActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
