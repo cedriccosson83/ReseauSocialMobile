@@ -6,11 +6,13 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
+
     private val au
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
 
         lateinit var auth : FirebaseAuth
         // Initialize Firebase Auth
@@ -23,4 +25,8 @@ class LoginActivity : AppCompatActivity() {
         updateUI(currentUser)
     }
 
+        private lateinit var auth: FirebaseAuth
+        // Initialize Firebase Auth
+        auth = FirebaseAuth.getInstance()
+    }
 }
