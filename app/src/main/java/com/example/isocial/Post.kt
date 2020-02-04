@@ -2,11 +2,11 @@ package com.example.isocial
 
 class Post{
 
-    var nameUser : String ?= null
+    var user : User ?= null
     var textContent : String ?= null
 
-    constructor(nameUser: String?, textContent: String?) {
-        this.nameUser = nameUser
+    constructor(user: User?, textContent: String?) {
+        this.user = user
         this.textContent = textContent
     }
 }
