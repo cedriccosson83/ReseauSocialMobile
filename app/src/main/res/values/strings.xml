@@ -11,4 +11,7 @@
     <string name="log_fail">E-mail ou mot de passe incorrect</string>
     <string name="signup_fail">Erreur d\'inscription</string>
     <string name="auth_fail">Authentication failed.</string>
+    <string name="hint_publication">A quoi pensez vous ?</string>
+    <string name="write_something">Écrivez une publication</string>
+    <string name="publish">Publier</string>
 </resources>
