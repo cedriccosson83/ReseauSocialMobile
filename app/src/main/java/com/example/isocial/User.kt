@@ -1,5 +1,6 @@
 package com.example.isocial
 
+import android.os.Parcelable
 import com.google.firebase.database.IgnoreExtraProperties
 import java.util.*
 import kotlin.collections.ArrayList
@@ -64,5 +65,5 @@ class User(
             return arrayOfNulls(size)
         }
     }
-*/
-}
+
+}*/

@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.recycler_view_post_cell.view.*
 
 class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit, val clickListenerPost: (Post) -> Unit): RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostAdapter.PostViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_post_cell, parent,false)
         return PostAdapter.PostViewHolder(view)
@@ -24,8 +25,8 @@ class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit
 
     class PostViewHolder(val view: View): RecyclerView.ViewHolder(view){
         fun bind(post: Post, clickListener: (Post) -> Unit, clickListenerPost: (Post) -> Unit){
-            view.textViewName.text = "${post.user?.firstName} ${post.user?.lastName}"
-            view.textViewContent.text = "${post.textContent}"
+           // view.textViewName.text = "${post.user?.firstName} ${post.user?.lastName}"
+            //view.textViewContent.text = "${post.textContent}"
             view.textViewName.setOnClickListener { clickListener(post) }
             view.imageViewUser.setOnClickListener { clickListener(post) }
             view.setOnClickListener {clickListenerPost(post) }

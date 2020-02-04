@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_post.textViewName
 import kotlinx.android.synthetic.main.activity_user.*
 
 class PostActivity : AppCompatActivity() {
-
+/*
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
@@ -25,5 +25,5 @@ class PostActivity : AppCompatActivity() {
     fun showPost(post : Post){
         textViewName.text= "${post.user?.firstName} ${post.user?.lastName}"
         textViewContent.text = "${post.textContent}"
-    }
+    }*/
 }
