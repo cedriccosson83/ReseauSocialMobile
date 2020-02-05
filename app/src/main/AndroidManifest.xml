@@ -12,7 +12,7 @@
         <activity android:name=".WritePostActivity"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".FeedActivitity" />
+        <activity android:name=".FeedActivity" />
         <activity android:name=".SignUpActivity"/>
         <activity android:name=".PostActivity"/>
         <activity android:name=".UserActivity" />

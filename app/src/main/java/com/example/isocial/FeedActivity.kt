@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_feed.*
 
 
@@ -31,27 +34,56 @@ class FeedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
         auth = FirebaseAuth.getInstance()
-        val dbPosts = database.getReference("posts")
 
-        //recyclerViewFeed.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
-        //recyclerViewFeed.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+
+        //val posts_list : ArrayList<Post> = getPosts()
+        recyclerViewFeed.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        recyclerViewFeed.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
         //recyclerViewFeed.adapter = PostAdapter(tabPosts,  { postItem : Post -> postItemClicked(postItem) }, { postItem : Post -> postClicked(postItem) } )
 
+        getPosts()
 
     }
-/*
+
+    private fun getPosts() {
+        val dbPosts = database.getReference("posts")
+        dbPosts.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                val postsList : ArrayList<Post> = ArrayList()
+                for (productSnapshot in dataSnapshot.children) {
+                    val post = productSnapshot.getValue(Post::class.java)
+                    post?.let {postsList.add(it)}
+                }
+
+                recyclerViewFeed.adapter = PostAdapter(postsList,
+                { postItem : Post -> postItemClicked(postItem) },
+                { postItem : Post -> postClicked(postItem) })
+
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                throw databaseError.toException()
+            }
+        })
+        //return postsList
+    }
+
     private fun postItemClicked(postItem : Post) {
         val intent = Intent(this, UserActivity::class.java)
-        intent.putExtra("user", postItem.user)
+        intent.putExtra("user", postItem.userid)
+        val author = postItem.getUser()
         startActivity(intent)
-        Toast.makeText(this, "Clicked: ${postItem.user?.firstName} ${postItem.user?.email} ", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Clicked: ${author.firstname} ${author.email} ", Toast.LENGTH_LONG).show()
     }
 
     private fun postClicked(postItem : Post) {
         val intent = Intent(this, PostActivity::class.java)
-        intent.putExtra("user", postItem.user)
+        intent.putExtra("user", postItem.userid)
         //intent.putExtra("post", post)
+
+        val author = postItem.getUser()
         startActivity(intent)
-        Toast.makeText(this, "Clicked: ${postItem.user?.firstName} ${postItem.textContent} ", Toast.LENGTH_LONG).show()
-    }*/
+        Toast.makeText(this, "Clicked: ${author.firstname} ${postItem.content} ", Toast.LENGTH_LONG).show()
+    }
 }

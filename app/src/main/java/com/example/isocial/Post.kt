@@ -1,6 +1,7 @@
 package com.example.isocial
 
-import com.google.firebase.database.IgnoreExtraProperties
+import com.google.firebase.database.*
+
 
 @IgnoreExtraProperties
 data class Post (
@@ -11,6 +12,9 @@ data class Post (
     var likes: ArrayList<User> = ArrayList(),
     var comments: ArrayList<Comment> = ArrayList()
 ) {
+
+    val database = FirebaseDatabase.getInstance()
+
     fun toMap(): Map<String, Any?> {
         return mapOf(
             "userid" to userid,
@@ -29,5 +33,24 @@ data class Post (
         this.user = user
         this.textContent = textContent
         */
+    }
+
+    fun getUser(): User {
+        lateinit var user : User
+
+        val userRef = database.getReference("users")
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                user = dataSnapshot.child(userid).getValue(User::class.java)!! //This is a1
+            }
+
+            override fun onCancelled(dbe: DatabaseError) {
+                throw dbe.toException()
+            }
+
+        })
+
+        return user
     }
 }
