@@ -2,6 +2,7 @@ package com.example.isocial
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -19,6 +20,8 @@ class FeedActivity : AppCompatActivity() {
     lateinit var auth: FirebaseAuth
     val database = FirebaseDatabase.getInstance()
 
+    val postsList : ArrayList<Post> = ArrayList()
+
     /*var user : User = User("ae1z212", "florentricciardi@gmail.com","Ricciardi","Florent", "06/03/1997","04/02/2020","01/02/2020")
     var user2 : User = User("dsq121", "cedriccosson@gmail.com", "Cosson","Cédric", "13/11/1997", "04/02/2020","02/01/2020")
     var user3 : User = User("dsqd455", "luciegaire@gmail.com", "Gaire", "Lucie","18/05/1999", "04/02/2020","18/01/2020")
@@ -35,13 +38,17 @@ class FeedActivity : AppCompatActivity() {
         setContentView(R.layout.activity_feed)
         auth = FirebaseAuth.getInstance()
 
-
+        Log.d("TAG", "TEST")
         //val posts_list : ArrayList<Post> = getPosts()
-        recyclerViewFeed.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
-        recyclerViewFeed.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+        //recyclerViewFeed.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        //recyclerViewFeed.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
         //recyclerViewFeed.adapter = PostAdapter(tabPosts,  { postItem : Post -> postItemClicked(postItem) }, { postItem : Post -> postClicked(postItem) } )
 
         getPosts()
+        Log.d("TAGGUEULE", postsList.toString())
+        //recyclerViewFeed.adapter = PostAdapter(postsList,
+        //    { postItem : Post -> postItemClicked(postItem) },
+        //    { postItem : Post -> postClicked(postItem) })
 
     }
 
@@ -50,16 +57,13 @@ class FeedActivity : AppCompatActivity() {
         dbPosts.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                val postsList : ArrayList<Post> = ArrayList()
                 for (productSnapshot in dataSnapshot.children) {
                     val post = productSnapshot.getValue(Post::class.java)
-                    post?.let {postsList.add(it)}
+                    post?.let {
+                        postsList.add(it)
+                        Log.d("CONTENU : ", it.content)
+                    }
                 }
-
-                recyclerViewFeed.adapter = PostAdapter(postsList,
-                { postItem : Post -> postItemClicked(postItem) },
-                { postItem : Post -> postClicked(postItem) })
-
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
