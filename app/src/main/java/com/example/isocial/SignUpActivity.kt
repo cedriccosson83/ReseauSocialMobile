@@ -74,7 +74,7 @@ class SignUpActivity : AppCompatActivity() {
     fun updateUI(user: FirebaseUser?) {
         if (user != null) {
             Toast.makeText(this, getString(R.string.signed_in) + user.uid, Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, FeedActivity::class.java))
         } else {
             Toast.makeText(this, getString(R.string.existing_acc), Toast.LENGTH_LONG).show()
         }

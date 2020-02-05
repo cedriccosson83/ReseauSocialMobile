@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_feed.*
+import kotlinx.android.synthetic.main.activity_user.textViewName
 
 
 class FeedActivity : AppCompatActivity() {
@@ -26,7 +27,7 @@ class FeedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
 
-        readPosts()
+        showPosts()
         recyclerViewFeed.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerViewFeed.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
 
@@ -37,7 +38,10 @@ class FeedActivity : AppCompatActivity() {
 
     }
 
-    fun readPosts() {
+
+
+    //This function get the posts on the database and show them on the feed
+    fun showPosts() {
 
         val myRef = database.getReference("posts")
         myRef.addValueEventListener(object : ValueEventListener {
@@ -46,14 +50,13 @@ class FeedActivity : AppCompatActivity() {
                 for(value in dataSnapshot.children ) {
                     var post : Post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), "date def", value.child("content").value.toString(),null,null)
                     posts.add(post)
+                    //showUserName(post.userid)
                 }
                 posts.reverse()
                 recyclerViewFeed.adapter = PostAdapter(posts,  { postItem : Post -> postItemClicked(postItem) }, { postItem : Post -> postClicked(postItem) } )
                 Log.d("post", posts.toString())
             }
-
             override fun onCancelled(error: DatabaseError) {
-
                 Log.w("post", "Failed to read value.", error.toException())
             }
         })
@@ -61,6 +64,7 @@ class FeedActivity : AppCompatActivity() {
 
     }
 
+    //allows to redirect on the user activity
     private fun postItemClicked(postItem : Post) {
         val intent = Intent(this, UserActivity::class.java)
         var id : String = postItem.userid
@@ -69,9 +73,11 @@ class FeedActivity : AppCompatActivity() {
         Toast.makeText(this, "Clicked: ${postItem.userid}", Toast.LENGTH_LONG).show()
     }
 
+    //allow to redirect on the post activity
     private fun postClicked(postItem : Post) {
         val intent = Intent(this, PostActivity::class.java)
-        //intent.putExtra("user", postItem.user)
+        var id : String = postItem.postid
+        intent.putExtra("post", id)
         //intent.putExtra("post", post)
         startActivity(intent)
         Toast.makeText(this, "Clicked: ${postItem.postid}", Toast.LENGTH_LONG).show()
