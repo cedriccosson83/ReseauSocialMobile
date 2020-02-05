@@ -33,11 +33,7 @@ class WritePostActivity : AppCompatActivity() {
                 Toast.makeText(this, "Utilisateur non trouvé", Toast.LENGTH_LONG)
             }
         }
-        readPosts()
-
-
-        //newPost("CedricId123", "04/02/2020", "Bonjour je suis un message écrit par" +
-        //        "Cédric cosson et je fais une grande quantité de caractères")
+        //readPosts()
     }
 
     private fun newPost(userId: String, date: String, content: String) {
@@ -53,28 +49,5 @@ class WritePostActivity : AppCompatActivity() {
         dbPosts.child(newId).setValue(post)
     }
 
-    fun readPosts(): ArrayList<Post> {
 
-        var posts : ArrayList<Post> = ArrayList<Post>()
-        val myRef = database.getReference("posts")
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                for(value in dataSnapshot.children ) {
-                   var post : Post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), "date def", value.child("content").value.toString(),null,null)
-                    Log.d("post", "Value is: ${value.child("content").value}")
-                    posts.add(post)
-                }
-
-
-            }
-            override fun onCancelled(error: DatabaseError) {
-
-                Log.w("post", "Failed to read value.", error.toException())
-            }
-        })
-
-        return posts
-
-    }
 }
