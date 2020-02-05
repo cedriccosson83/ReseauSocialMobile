@@ -53,15 +53,17 @@ class WritePostActivity : AppCompatActivity() {
         dbPosts.child(newId).setValue(post)
     }
 
-    fun readPosts() {
+    fun readPosts(): ArrayList<Post> {
 
+        var posts : ArrayList<Post> = ArrayList<Post>()
         val myRef = database.getReference("posts")
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 for(value in dataSnapshot.children ) {
-
-                    Log.d("post", "Value is: ${value}")
+                   var post : Post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), "date def", value.child("content").value.toString(),null,null)
+                    Log.d("post", "Value is: ${value.child("content").value}")
+                    posts.add(post)
                 }
 
 
@@ -71,6 +73,8 @@ class WritePostActivity : AppCompatActivity() {
                 Log.w("post", "Failed to read value.", error.toException())
             }
         })
+
+        return posts
 
     }
 }

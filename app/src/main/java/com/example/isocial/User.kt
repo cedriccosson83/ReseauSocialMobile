@@ -6,7 +6,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 @IgnoreExtraProperties
-data class User (
+data class User  (
     var userid: String = "",
     var email: String? = "",
     var firstname: String? = "",
@@ -14,7 +14,7 @@ data class User (
     var birthdate: String? = "",
     var lastConn: String? = null,
     var dateCreate: String? = Date().toString(),
-    var posts: ArrayList<Post> = ArrayList()
+    var posts: ArrayList<Post> ?= ArrayList()
 )
 /*import android.os.Parcel
 import android.os.Parcelable

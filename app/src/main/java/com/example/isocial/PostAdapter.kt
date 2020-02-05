@@ -25,8 +25,8 @@ class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit
 
     class PostViewHolder(val view: View): RecyclerView.ViewHolder(view){
         fun bind(post: Post, clickListener: (Post) -> Unit, clickListenerPost: (Post) -> Unit){
-           // view.textViewName.text = "${post.user?.firstName} ${post.user?.lastName}"
-            //view.textViewContent.text = "${post.textContent}"
+            view.textViewName.text = "${post.userid}"
+            view.textViewContent.text = "${post.content}"
             view.textViewName.setOnClickListener { clickListener(post) }
             view.imageViewUser.setOnClickListener { clickListener(post) }
             view.setOnClickListener {clickListenerPost(post) }
