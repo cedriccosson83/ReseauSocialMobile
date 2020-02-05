@@ -28,6 +28,8 @@ class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit
             //var user = post.getUser()
             //view.textViewName.text = "${user.firstname} ${user.lastname}"
             //view.textViewContent.text = "${post.content}"
+            view.textViewName.text = "${post.userid}"
+            view.textViewContent.text = "${post.content}"
             view.textViewName.setOnClickListener { clickListener(post) }
             view.imageViewUser.setOnClickListener { clickListener(post) }
             view.setOnClickListener {clickListenerPost(post) }

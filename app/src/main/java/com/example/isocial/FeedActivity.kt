@@ -17,32 +17,54 @@ import kotlinx.android.synthetic.main.activity_feed.*
 
 class FeedActivity : AppCompatActivity() {
 
-    lateinit var auth: FirebaseAuth
-    val database = FirebaseDatabase.getInstance()
 
     val postsList : ArrayList<Post> = ArrayList()
 
-    /*var user : User = User("ae1z212", "florentricciardi@gmail.com","Ricciardi","Florent", "06/03/1997","04/02/2020","01/02/2020")
-    var user2 : User = User("dsq121", "cedriccosson@gmail.com", "Cosson","Cédric", "13/11/1997", "04/02/2020","02/01/2020")
-    var user3 : User = User("dsqd455", "luciegaire@gmail.com", "Gaire", "Lucie","18/05/1999", "04/02/2020","18/01/2020")
-
-    var post : Post = Post(user, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dictum volutpat interdum. Donec sed diam nec risus tincidunt aliquet. Curabitur sed.")
-    var post2 : Post = Post(user2, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dictum volutpat interdum. Donec sed diam nec risus tincidunt aliquet. Curabitur sed.")
-    var post3 : Post = Post(user3, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dictum volutpat interdum. Donec sed diam nec risus tincidunt aliquet. Curabitur sed.")
-*/
-    //val tabPosts = arrayListOf(post,post2,post3)
-
+    lateinit var auth: FirebaseAuth
+    val database = FirebaseDatabase.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
-        auth = FirebaseAuth.getInstance()
+        //auth = FirebaseAuth.getInstance()
 
-        Log.d("TAG", "TEST")
+        //Log.d("TAG", "TEST")
         //val posts_list : ArrayList<Post> = getPosts()
         //recyclerViewFeed.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         //recyclerViewFeed.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
         //recyclerViewFeed.adapter = PostAdapter(tabPosts,  { postItem : Post -> postItemClicked(postItem) }, { postItem : Post -> postClicked(postItem) } )
+
+        readPosts()
+        recyclerViewFeed.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        recyclerViewFeed.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
+
+        buttonPublish.setOnClickListener {
+            val intent = Intent(this, WritePostActivity::class.java)
+            startActivity(intent)
+        }
+
+    }
+
+    fun readPosts() {
+
+        val myRef = database.getReference("posts")
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot){
+                val posts : ArrayList<Post> = ArrayList<Post>()
+                for(value in dataSnapshot.children ) {
+                    var post : Post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), "date def", value.child("content").value.toString(),null,null)
+                    posts.add(post)
+                }
+                posts.reverse()
+                recyclerViewFeed.adapter = PostAdapter(posts,  { postItem : Post -> postItemClicked(postItem) }, { postItem : Post -> postClicked(postItem) } )
+                Log.d("post", posts.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+                Log.w("post", "Failed to read value.", error.toException())
+            }
+        })
 
         getPosts()
         Log.d("TAGGUEULE", postsList.toString())
@@ -83,19 +105,27 @@ class FeedActivity : AppCompatActivity() {
 
     private fun postItemClicked(postItem : Post) {
         val intent = Intent(this, UserActivity::class.java)
-        intent.putExtra("user", postItem.userid)
-        val author = postItem.getUser()
+
+        //intent.putExtra("user", postItem.userid)
+        //val author = postItem.getUser()
+        //startActivity(intent)
+        //Toast.makeText(this, "Clicked: ${author.firstname} ${author.email} ", Toast.LENGTH_LONG).show()
+
+        var id : String = postItem.userid
+        intent.putExtra("user", id)
         startActivity(intent)
-        Toast.makeText(this, "Clicked: ${author.firstname} ${author.email} ", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Clicked: ${postItem.userid}", Toast.LENGTH_LONG).show()
     }
 
     private fun postClicked(postItem : Post) {
         val intent = Intent(this, PostActivity::class.java)
         intent.putExtra("user", postItem.userid)
+        //intent.putExtra("user", postItem.user)
         //intent.putExtra("post", post)
 
         val author = postItem.getUser()
         startActivity(intent)
-        Toast.makeText(this, "Clicked: ${author.firstname} ${postItem.content} ", Toast.LENGTH_LONG).show()
+       // Toast.makeText(this, "Clicked: ${author.firstname} ${postItem.content} ", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Clicked: ${postItem.postid}", Toast.LENGTH_LONG).show()
     }
 }

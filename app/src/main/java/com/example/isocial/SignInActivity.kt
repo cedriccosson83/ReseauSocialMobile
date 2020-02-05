@@ -42,7 +42,7 @@ class SignInActivity : AppCompatActivity() {
     private fun updateUI(user: FirebaseUser?) {
         if (user != null ) {
             Toast.makeText(this, getString(R.string.signed_in) + user.uid, Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, WritePostActivity::class.java))
+            startActivity(Intent(this, FeedActivity::class.java))
         } else {
             Toast.makeText(this, getString(R.string.mail_mdp_incorr), Toast.LENGTH_LONG).show()
         }

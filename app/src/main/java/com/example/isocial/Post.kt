@@ -9,8 +9,8 @@ data class Post (
     var postid: String = "",
     var date: String? = "",
     var content: String? = "",
-    var likes: ArrayList<User> = ArrayList(),
-    var comments: ArrayList<Comment> = ArrayList()
+    var likes: ArrayList<User>? = ArrayList(),
+    var comments: ArrayList<Comment>? = ArrayList()
 ) {
 
     val database = FirebaseDatabase.getInstance()
