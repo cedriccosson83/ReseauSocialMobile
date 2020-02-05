@@ -53,20 +53,28 @@ class FeedActivity : AppCompatActivity() {
     }
 
     private fun getPosts() {
-        val dbPosts = database.getReference("posts")
+        Log.d("GETPOST1", "OK")
+        val dbPosts = database.getReference("users")
+        Log.d("GETPOST2", "OK")
         dbPosts.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
+                val posts : ArrayList<User> = ArrayList()
+                Log.d("GETPOST3", "OK")
                 for (productSnapshot in dataSnapshot.children) {
-                    val post = productSnapshot.getValue(Post::class.java)
-                    post?.let {
-                        postsList.add(it)
+                    val post = productSnapshot.getValue(User::class.java)!!
+                    /*post?.let {
+                        posts.add(it)
                         Log.d("CONTENU : ", it.content)
-                    }
+                    }*/
+                    posts.add(post)
+                    Log.d("CONTENU : ", post.toString())
                 }
+                Log.d("GETPOST4", "OK")
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
+                Log.d("ERROR : ", "CANCELLED ERROR")
                 throw databaseError.toException()
             }
         })
