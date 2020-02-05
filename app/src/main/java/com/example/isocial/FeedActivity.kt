@@ -27,13 +27,6 @@ class FeedActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
-        //auth = FirebaseAuth.getInstance()
-
-        //Log.d("TAG", "TEST")
-        //val posts_list : ArrayList<Post> = getPosts()
-        //recyclerViewFeed.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
-        //recyclerViewFeed.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
-        //recyclerViewFeed.adapter = PostAdapter(tabPosts,  { postItem : Post -> postItemClicked(postItem) }, { postItem : Post -> postClicked(postItem) } )
 
         showPosts()
         recyclerViewFeed.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
@@ -43,10 +36,7 @@ class FeedActivity : AppCompatActivity() {
             val intent = Intent(this, WritePostActivity::class.java)
             startActivity(intent)
         }
-
     }
-
-
 
     //This function get the posts on the database and show them on the feed
     fun showPosts() {
@@ -70,17 +60,10 @@ class FeedActivity : AppCompatActivity() {
         })
 
         getPosts()
-        Log.d("TAGGUEULE", postsList.toString())
-        //recyclerViewFeed.adapter = PostAdapter(postsList,
-        //    { postItem : Post -> postItemClicked(postItem) },
-        //    { postItem : Post -> postClicked(postItem) })
-
     }
 
     private fun getPosts() {
-        Log.d("GETPOST1", "OK")
         val dbPosts = database.getReference("users")
-        Log.d("GETPOST2", "OK")
         dbPosts.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -93,9 +76,7 @@ class FeedActivity : AppCompatActivity() {
                         Log.d("CONTENU : ", it.content)
                     }*/
                     posts.add(post)
-                    Log.d("CONTENU : ", post.toString())
                 }
-                Log.d("GETPOST4", "OK")
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
