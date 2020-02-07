@@ -2,13 +2,13 @@ package com.example.isocial
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.activity_user.*
 
 
@@ -20,17 +20,24 @@ class UserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user)
+        auth = FirebaseAuth.getInstance()
         val intent = intent
         if (intent != null) {
             val userid :String = intent.getStringExtra("user")
             if (userid != null) { // tu peux manipuler user !
-                readUser(userid)
+                showUser(userid)
+                val currentUserID = auth.currentUser?.uid
+                if(currentUserID == userid){
+                    Log.d("user", " profil de l'utilisateur")
+                }else{
+                    imageViewUserEdit.visibility = View.INVISIBLE
+                }
             }
         }
 
     }
 
-    fun readUser(userId : String) {
+    fun showUser(userId : String) {
 
         val myRef = database.getReference("users")
         myRef.addValueEventListener(object : ValueEventListener {

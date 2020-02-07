@@ -8,7 +8,7 @@ data class Comment (
     var postId: String = "",
     var date: String? = "",
     var content: String? = "",
-    var likedBy: ArrayList<User> = ArrayList()
+    var likedBy: ArrayList<User>? = ArrayList()
 ) {
     fun toMap(): Map<String, Any?> {
         return mapOf(
