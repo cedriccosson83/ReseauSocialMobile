@@ -16,7 +16,7 @@
         <activity android:name=".SignUpActivity"/>
         <activity android:name=".PostActivity"/>
         <activity android:name=".UserActivity" />
-        <activity android:name=".SignInActivity" >
+        <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
