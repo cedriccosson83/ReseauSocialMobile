@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_feed.*
-import kotlinx.android.synthetic.main.activity_user.textViewName
+import kotlinx.android.synthetic.main.activity_user.*
 
 
 class FeedActivity : AppCompatActivity() {
@@ -48,10 +48,9 @@ class FeedActivity : AppCompatActivity() {
                 for(value in dataSnapshot.children ) {
                     var post : Post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), "date def", value.child("content").value.toString(),null,null)
                     posts.add(post)
-                    //showUserName(post.userid)
                 }
                 posts.reverse()
-                recyclerViewFeed.adapter = PostAdapter(posts,  { postItem : Post -> postItemClicked(postItem) }, { postItem : Post -> postClicked(postItem) } )
+                recyclerViewFeed.adapter = PostAdapter(posts,  { postItem : Post -> userClicked(postItem) }, { postItem : Post -> postClicked(postItem) } )
                 Log.d("post", posts.toString())
             }
             override fun onCancelled(error: DatabaseError) {
@@ -88,7 +87,7 @@ class FeedActivity : AppCompatActivity() {
     }
 
     //allows to redirect on the user activity
-    private fun postItemClicked(postItem : Post) {
+    private fun userClicked(postItem : Post) {
         val intent = Intent(this, UserActivity::class.java)
 
         //intent.putExtra("user", postItem.userid)
@@ -106,7 +105,9 @@ class FeedActivity : AppCompatActivity() {
     private fun postClicked(postItem : Post) {
         val intent = Intent(this, PostActivity::class.java)
         var id : String = postItem.postid
+        var name : String = textViewName.text.toString()
         intent.putExtra("post", id)
+        intent.putExtra("name", name)
         //intent.putExtra("post", post)
 
         val author = postItem.getUser()
