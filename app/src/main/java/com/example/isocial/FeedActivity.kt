@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_feed.*
+import kotlinx.android.synthetic.main.activity_post.*
 import kotlinx.android.synthetic.main.activity_user.*
 import kotlinx.android.synthetic.main.recycler_view_post_cell.*
 
@@ -83,4 +84,6 @@ class FeedActivity : AppCompatActivity() {
         startActivity(intent)
         Toast.makeText(this, "Clicked: ${postItem.postid}", Toast.LENGTH_LONG).show()
     }
+
+
 }
