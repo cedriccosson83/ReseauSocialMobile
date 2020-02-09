@@ -33,4 +33,6 @@
     <string name="age">Age</string>
     <string name="comments">Commentaires :</string>
     <string name="commentContent">Comment</string>
+    <string name="mail">Email</string>
+    <string name="date">Date</string>
 </resources>

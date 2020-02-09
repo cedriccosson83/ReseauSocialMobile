@@ -46,7 +46,7 @@ class UserActivity : AppCompatActivity() {
                 for(value in dataSnapshot.children ) {
                     user = User(value.child("userid").value.toString(), value.child("email").value.toString(), value.child("firstname").value.toString(), value.child("lastname").value.toString(),value.child("birthdate").value.toString(),null,null,null)
                     if(user.userid == userId){
-                        textViewName.text = "${user.firstname} ${user.lastname}"
+                        textViewName2.text = "${user.firstname} ${user.lastname}"
                     }
                 }
             }

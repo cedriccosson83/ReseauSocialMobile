@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.EditText
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -12,11 +11,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.activity_post.*
-import kotlinx.android.synthetic.main.activity_post.textViewName
-import kotlinx.android.synthetic.main.activity_user.*
-import kotlinx.android.synthetic.main.recycler_view_post_cell.view.*
+import kotlinx.android.synthetic.main.activity_post.textViewName2
 
 class PostActivity : AppCompatActivity() {
 
@@ -58,7 +54,7 @@ class PostActivity : AppCompatActivity() {
                     val postId: String = intent.getStringExtra("post")
                     if(post.postid == postId){
 
-                        textViewContent.text = "${post.content}"
+                        textViewContent2.text = "${post.content}"
                         break
                     }
                     showUser(post.userid)
@@ -108,7 +104,7 @@ class PostActivity : AppCompatActivity() {
                 for(value in dataSnapshot.children ) {
                     user = User(value.child("userid").value.toString(), value.child("email").value.toString(), value.child("firstname").value.toString(), value.child("lastname").value.toString(),value.child("birthdate").value.toString(),null,null,null)
                     if(user.userid == userId){
-                        textViewName.text = "${user.firstname} ${user.lastname}"
+                        textViewName2.text = "${user.firstname} ${user.lastname}"
                     }
                 }
             }
@@ -131,7 +127,8 @@ class PostActivity : AppCompatActivity() {
             Log.w("ERROR", "Couldn't get push key for comments")
             return
         }
-        val comment = currentUserID?.let { Comment(it, postId, null, content, null) }
+        //val date = LocalDateTime.now()
+        val comment = currentUserID?.let { Comment(it, postId, "date", content, null) }
         dbComments.child(newId).setValue(comment)
 
 

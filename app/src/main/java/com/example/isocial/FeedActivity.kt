@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.activity_user.*
+import kotlinx.android.synthetic.main.recycler_view_post_cell.*
 
 
 class FeedActivity : AppCompatActivity() {
@@ -28,7 +29,6 @@ class FeedActivity : AppCompatActivity() {
         setContentView(R.layout.activity_feed)
 
         showPosts()
-        recyclerViewFeed.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerViewFeed.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
 
         buttonPublish.setOnClickListener {
@@ -48,7 +48,7 @@ class FeedActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot){
                 val posts : ArrayList<Post> = ArrayList<Post>()
                 for(value in dataSnapshot.children ) {
-                    var post : Post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), "date def", value.child("content").value.toString(),null,null)
+                    var post : Post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), value.child("date").value.toString(), value.child("content").value.toString(),null,null)
                     posts.add(post)
                 }
                 posts.reverse()
