@@ -2,15 +2,13 @@ package com.example.isocial
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import android.widget.Toast
 import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_sign_in.*
-import kotlinx.android.synthetic.main.activity_sign_in.emaileditText
-import kotlinx.android.synthetic.main.activity_sign_in.passwordeditText
+import kotlinx.android.synthetic.main.activity_sign_in.email
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.*
 

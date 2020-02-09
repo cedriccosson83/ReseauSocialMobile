@@ -1,19 +1,17 @@
 package com.example.isocial
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_write.*
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class WritePostActivity : AppCompatActivity() {
 
@@ -27,16 +25,28 @@ class WritePostActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         publishBTN.setOnClickListener{
             val userid = auth.currentUser?.uid
+
             if (userid != null){
-                newPost(userid, Date().toString(), publish_field.text.toString())
+                if(publish_field.text.toString() != ""){
+                    newPost(userid, publish_field.text.toString())
+                    publish_field.setText("")
+                    Toast.makeText(this, "Post publié!", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this, FeedActivity::class.java)
+                    startActivity(intent)
+
+                }
+                else{
+                    Log.d("erreur", "vide")
+                    Toast.makeText(this, "Publication vide", Toast.LENGTH_LONG).show()
+                }
             } else {
-                Toast.makeText(this, "Utilisateur non trouvé", Toast.LENGTH_LONG)
+                Toast.makeText(this, "Utilisateur non trouvé", Toast.LENGTH_LONG).show()
             }
         }
         //readPosts()
     }
 
-    private fun newPost(userId: String, date: String, content: String) {
+    private fun newPost(userId: String, content: String) {
 
         val dbPosts = database.getReference("posts")
         val newId = dbPosts.push().key
@@ -45,7 +55,10 @@ class WritePostActivity : AppCompatActivity() {
             return
         }
 
-        val post = Post(userId, newId, date, content, ArrayList(), ArrayList())
+        val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+        val currentDateandTime: String = sdf.format(Date())
+        Log.d("heure", currentDateandTime)
+        val post = Post(userId, newId, currentDateandTime, content, ArrayList(), ArrayList())
         dbPosts.child(newId).setValue(post)
     }
 

@@ -10,8 +10,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_user.*
+import kotlinx.android.synthetic.main.recycler_view_post_cell.*
 import kotlinx.android.synthetic.main.recycler_view_post_cell.view.*
+
 
 class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit, val clickListenerPost: (Post) -> Unit): RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
 
@@ -57,14 +58,42 @@ class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit
 
 
         }
+
+        fun countComments(postId: String) {
+
+            val myRef = database.getReference("comments")
+            myRef.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot){
+                    val comments : ArrayList<Comment> = ArrayList<Comment>()
+                    for(value in dataSnapshot.children ) {
+
+
+                        var comment : Comment = Comment(value.child("userid").value.toString(), value.child("postId").value.toString(), "date def", value.child("content").value.toString(),null)
+                        if(comment.postId == postId){
+                            comments.add(comment)
+                        }
+
+                    }
+                    var count : Int = comments.size
+                    view.textViewCommentsNumber.text = "Commentaires(${count})"
+
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w("comment", "Failed to read value.", error.toException())
+                }
+            })
+
+
+        }
         fun bind(post: Post, clickListener: (Post) -> Unit, clickListenerPost: (Post) -> Unit){
             //view.textViewName.text = "${post.userid}"
             view.textViewContent.text = "${post.content}"
+            view.textViewDate.text = "${post.date}"
             view.textViewName.setOnClickListener { clickListener(post) }
             view.imageViewUser.setOnClickListener { clickListener(post) }
-            view.setOnClickListener {clickListenerPost(post) }
+            view.cardViewPost.setOnClickListener {clickListenerPost(post) }
             showUserName(post.userid)
-            //view.setOnClickListener { clickListener(post)}
+            countComments(post.postid)
         }
     }
 

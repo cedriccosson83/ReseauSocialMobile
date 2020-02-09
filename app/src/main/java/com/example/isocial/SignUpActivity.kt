@@ -9,8 +9,7 @@ import kotlinx.android.synthetic.main.activity_sign_up.*
 import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_sign_in.*
-import kotlinx.android.synthetic.main.activity_sign_up.emaileditText
-import kotlinx.android.synthetic.main.activity_sign_up.passwordeditText
+import kotlinx.android.synthetic.main.activity_sign_up.password
 import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
