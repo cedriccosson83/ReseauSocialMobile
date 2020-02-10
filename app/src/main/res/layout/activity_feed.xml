@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".FeedActivity">
 
-
     <TextView
         android:id="@+id/feedtw"
         android:layout_width="wrap_content"
@@ -25,7 +24,6 @@
         android:id="@+id/recyclerViewFeed"
         android:layout_width="416dp"
         android:layout_height="575dp"
-
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
