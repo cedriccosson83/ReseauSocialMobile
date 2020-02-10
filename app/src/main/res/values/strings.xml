@@ -37,4 +37,5 @@
     <string name="mail">Email</string>
     <string name="date">Date</string>
     <string name="activityfeed">Fil d\'actualité</string>
+    <string name="comm">Commentaire :</string>
 </resources>
