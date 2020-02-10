@@ -38,17 +38,10 @@ class ProfileActivity : AppCompatActivity() {
                 val currentUserID = auth.currentUser?.uid
                 if (currentUserID == userId) {
                     changeProfilImage.setOnClickListener {
-                        val imagefromgalleryIntent = Intent(Intent.ACTION_PICK)
-                        imagefromgalleryIntent.setType("image/png")
+                        changepicture()
+                    }
+                    nameProfile.setOnClickListener {
 
-                        val imagefromcameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-                        val chooseIntent = Intent.createChooser(imagefromgalleryIntent, "Gallery")
-                        chooseIntent.putExtra(
-                            Intent.EXTRA_INITIAL_INTENTS,
-                            arrayOf(imagefromcameraIntent)
-                        )
-                        startActivityForResult(chooseIntent, 11)
                     }
                 }
                  else {
@@ -110,5 +103,19 @@ class ProfileActivity : AppCompatActivity() {
         })
 
 
+    }
+
+    fun changepicture(){
+        val imagefromgalleryIntent = Intent(Intent.ACTION_PICK)
+        imagefromgalleryIntent.setType("image/png")
+
+        val imagefromcameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        val chooseIntent = Intent.createChooser(imagefromgalleryIntent, "Gallery")
+        chooseIntent.putExtra(
+            Intent.EXTRA_INITIAL_INTENTS,
+            arrayOf(imagefromcameraIntent)
+        )
+        startActivityForResult(chooseIntent, 11)
     }
 }
