@@ -7,13 +7,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="0dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="409dp"
-        android:layout_height="251dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2dp"
         app:layout_constraintBottom_toTopOf="@+id/editTextComment"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -32,12 +35,14 @@
             android:id="@+id/textViewContent2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="15dp"
             android:text="@string/Content"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageViewUser" />
+            app:layout_constraintStart_toEndOf="@+id/imageViewUser"
+            app:layout_constraintTop_toBottomOf="@+id/nameProfile" />
 
         <ImageView
             android:id="@+id/imageViewUser"
@@ -49,26 +54,15 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@mipmap/ic_launcher_round" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="160dp"
-            android:layout_height="145dp"
-            android:layout_marginStart="92dp"
-            app:layout_constraintBottom_toTopOf="@+id/textViewContent2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageViewUser"
-            app:layout_constraintVertical_bias="0.73"
-            app:srcCompat="@android:drawable/ic_menu_camera" />
-
         <TextView
             android:id="@+id/textViewDate2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginStart="16dp"
             android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/nameProfile"
+            app:layout_constraintStart_toEndOf="@+id/nameProfile"
+            app:layout_constraintTop_toTopOf="@+id/nameProfile" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -76,24 +70,22 @@
         android:id="@+id/textViewComments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
-        android:layout_marginTop="60dp"
+        android:layout_marginBottom="3dp"
         android:text="@string/comments"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewComments"
 
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.041"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextComment" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewComments"
+        android:layout_width="401dp"
+        android:layout_height="419dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
-        android:layout_width="394dp"
-        android:layout_height="241dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewComments" />
 
@@ -102,10 +94,11 @@
         android:layout_width="299dp"
         android:layout_height="61dp"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="16dp"
         android:ems="10"
         android:hint="@string/commentsText"
         android:inputType="textPersonName"
-        android:text="@string/comm"
         app:layout_constraintBottom_toTopOf="@+id/textViewComments"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
@@ -121,12 +114,52 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editTextComment"
         app:layout_constraintTop_toTopOf="@+id/editTextComment" />
-        android:layout_height="0dp"
-        android:layout_marginStart="299dp"
-        android:layout_marginTop="64dp"
-        android:text="@string/publish"
-        app:layout_constraintStart_toStartOf="@+id/editTextComment"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+    android:layout_height="0dp"
+    android:layout_marginStart="299dp"
+    android:layout_marginTop="64dp"
+    android:text="@string/publish"
+    app:layout_constraintStart_toStartOf="@+id/editTextComment"
+    app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="415dp"
+        android:layout_height="78dp"
+        android:background="#FF9800"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <ImageButton
+            android:id="@+id/accessNewBTN"
+            android:layout_width="144dp"
+            android:layout_height="156dp"
+            android:layout_gravity="center_horizontal|center"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/app_name"
+            app:srcCompat="@drawable/comment" />
+
+        <ImageButton
+            android:id="@+id/accessFeedBTN"
+            android:layout_width="131dp"
+            android:layout_height="82dp"
+            android:layout_gravity="center_horizontal|center"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/app_name"
+            app:srcCompat="@drawable/feed" />
+
+        <ImageButton
+            android:id="@+id/accessProfileBTN"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_gravity="center_horizontal|center"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/app_name"
+            app:srcCompat="@drawable/user" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

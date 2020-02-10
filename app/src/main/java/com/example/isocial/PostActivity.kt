@@ -13,6 +13,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_post.*
+import kotlinx.android.synthetic.main.activity_post.accessFeedBTN
+import kotlinx.android.synthetic.main.activity_post.nameProfile
 import kotlinx.android.synthetic.main.recycler_view_post_cell.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,6 +35,17 @@ class PostActivity : AppCompatActivity() {
         if (intent != null) {
             showPost(intent)
 
+        }
+
+        accessNewBTN.setOnClickListener{
+            startActivity(Intent(this, WritePostActivity::class.java))
+        }
+
+        accessFeedBTN.setOnClickListener{
+            startActivity(Intent(this, FeedActivity::class.java))
+        }
+        accessProfileBTN.setOnClickListener{
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
         recyclerViewComments.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerViewComments.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)

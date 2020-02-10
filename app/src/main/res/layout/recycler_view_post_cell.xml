@@ -22,9 +22,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cardViewPost"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:orientation="vertical">
+            android:layout_height="98dp"
+            android:orientation="vertical"
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/textViewName"
@@ -49,8 +49,8 @@
 
             <ImageView
                 android:id="@+id/imageViewUserPost"
-                android:layout_width="43dp"
-                android:layout_height="43dp"
+                android:layout_width="62dp"
+                android:layout_height="69dp"
                 android:layout_marginStart="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -60,11 +60,12 @@
                 android:id="@+id/textViewDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="4dp"
                 android:text="@string/date"
                 android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toTopOf="@+id/textViewContent"
+                app:layout_constraintStart_toEndOf="@+id/textViewName"
+                app:layout_constraintTop_toTopOf="@+id/textViewName" />
 
             <TextView
                 android:id="@+id/textViewCommentsNumber"
@@ -81,8 +82,7 @@
                 android:id="@+id/imageViewStar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@android:drawable/btn_star_big_off" />
