@@ -1,40 +1,117 @@
 package com.example.isocial
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.database.FirebaseDatabase
-import android.util.Log
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.DocumentReference
+import com.google.android.gms.tasks.Task
+import android.os.Message
+import android.provider.MediaStore
+import android.widget.Toast
+import com.google.android.gms.tasks.Continuation
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.IOException
+import java.util.*
+import androidx.annotation.NonNull
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.google.firebase.auth.FirebaseAuth
+
 
 class MainActivity : AppCompatActivity() {
 
     val database = FirebaseDatabase.getInstance()
+    private val PICK_IMAGE_REQUEST = 71
+    private lateinit var filePath: Uri
+    private var firebaseStore: FirebaseStorage? = null
+    private lateinit var storageReference: StorageReference
+    lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var index = 0
-        while(index++ < 10) {
-            val myRef = database.getReference("users/"+index+"/nom")
-            myRef.setValue("Nom de l'utilisateur " + index)
-        }
+        //setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val myRef = database.getReference("users/5/nom")
-        myRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val value = dataSnapshot.getValue(String::class.java)
-                MainTV.text = value
-            }
-            override fun onCancelled(error: DatabaseError) {
-                Log.w("CONSOLE: ", "Failed to read value.", error.toException())
-            }
-        })
+        auth = FirebaseAuth.getInstance()
+        firebaseStore = FirebaseStorage.getInstance()
+        storageReference = FirebaseStorage.getInstance().reference
 
-        myRef.setValue("Cédric COSSON")
-
+        btn_choose_image.setOnClickListener { launchGallery() }
+        btn_upload_image.setOnClickListener { uploadImage() }
     }
 
+    private fun launchGallery() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            if(data == null || data.data == null){
+                return
+            }
+
+            filePath = data.data ?: Uri.EMPTY
+            try {
+                val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
+                image_preview.setImageBitmap(bitmap)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun addUploadRecordToDb(uri: String){
+        val db = FirebaseFirestore.getInstance()
+
+        val data = HashMap<String, Any>()
+        data["imageUrl"] = uri
+
+        db.collection("posts")
+            .add(data)
+            .addOnSuccessListener { documentReference ->
+                Toast.makeText(this, "Image enregistrée", Toast.LENGTH_LONG).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Erreur lors de la sauvegarde", Toast.LENGTH_LONG).show()
+            }
+    }
+
+    private fun uploadImage(){
+        val userid = auth.currentUser?.uid ?: ""
+        if(userid != ""){
+            val riversRef = storageReference.child("users/$userid/profile")
+
+            riversRef.putFile(filePath)
+                .addOnSuccessListener { taskSnapshot ->
+
+                    val downloadUrl = taskSnapshot.metadata?.reference?.downloadUrl.toString()
+                    if(downloadUrl.isNotEmpty()) {
+                        addUploadRecordToDb(downloadUrl)
+                        Toast.makeText(this, downloadUrl, Toast.LENGTH_LONG).show()
+                    }
+
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this,"Échec de l'upload de l'image", Toast.LENGTH_LONG).show()
+                }
+        }
+        else{
+            Toast.makeText(this, "Please Upload an Image", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
