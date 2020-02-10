@@ -14,11 +14,16 @@ import kotlinx.android.synthetic.main.recycler_view_post_cell.*
 import kotlinx.android.synthetic.main.recycler_view_post_cell.view.*
 
 
-class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit, val clickListenerPost: (Post) -> Unit): RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
+class PostAdapter(
+    val posts: ArrayList<Post>,
+    val clickListener: (Post) -> Unit,
+    val clickListenerPost: (Post) -> Unit
+) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostAdapter.PostViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_post_cell, parent,false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.recycler_view_post_cell, parent, false)
         return PostAdapter.PostViewHolder(view)
     }
 
@@ -28,23 +33,32 @@ class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit
 
     override fun onBindViewHolder(holder: PostAdapter.PostViewHolder, position: Int) {
         val post = posts[position]
-        holder.bind(post,clickListener, clickListenerPost)
+        holder.bind(post, clickListener, clickListenerPost)
     }
 
-    class PostViewHolder(val view: View): RecyclerView.ViewHolder(view){
+    class PostViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         lateinit var auth: FirebaseAuth
         val database = FirebaseDatabase.getInstance()
 
         //This function allows to show the name of the user
-        fun showUserName(userId : String) {
+        fun showUserName(userId: String) {
 
             val myRef = database.getReference("users")
             myRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot){
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
                     var user: User
-                    for(value in dataSnapshot.children ) {
-                        user = User(value.child("userid").value.toString(), value.child("email").value.toString(), value.child("firstname").value.toString(), value.child("lastname").value.toString(),value.child("birthdate").value.toString(),null,null,null)
-                        if(user.userid == userId){
+                    for (value in dataSnapshot.children) {
+                        user = User(
+                            value.child("userid").value.toString(),
+                            value.child("email").value.toString(),
+                            value.child("firstname").value.toString(),
+                            value.child("lastname").value.toString(),
+                            value.child("birthdate").value.toString(),
+                            null,
+                            null,
+                            null
+                        )
+                        if (user.userid == userId) {
                             view.textViewName.text = "${user.firstname} ${user.lastname}"
                         }
                     }
@@ -63,21 +77,28 @@ class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit
 
             val myRef = database.getReference("comments")
             myRef.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot){
-                    val comments : ArrayList<Comment> = ArrayList<Comment>()
-                    for(value in dataSnapshot.children ) {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val comments: ArrayList<Comment> = ArrayList<Comment>()
+                    for (value in dataSnapshot.children) {
 
 
-                        var comment : Comment = Comment(value.child("userid").value.toString(), value.child("postId").value.toString(), "date def", value.child("content").value.toString(),null)
-                        if(comment.postId == postId){
+                        var comment: Comment = Comment(
+                            value.child("userid").value.toString(),
+                            value.child("postId").value.toString(),
+                            "date def",
+                            value.child("content").value.toString(),
+                            null
+                        )
+                        if (comment.postId == postId) {
                             comments.add(comment)
                         }
 
                     }
-                    var count : Int = comments.size
+                    var count: Int = comments.size
                     view.textViewCommentsNumber.text = "Commentaires(${count})"
 
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     Log.w("comment", "Failed to read value.", error.toException())
                 }
@@ -85,19 +106,24 @@ class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit
 
 
         }
-        fun bind(post: Post, clickListener: (Post) -> Unit, clickListenerPost: (Post) -> Unit){
+
+        fun bind(post: Post, clickListener: (Post) -> Unit, clickListenerPost: (Post) -> Unit) {
             //view.textViewName.text = "${post.userid}"
             view.textViewContent.text = "${post.content}"
             view.textViewDate.text = "${post.date}"
-            view.textViewName.setOnClickListener { clickListener(post) }
-            view.imageViewUser.setOnClickListener { clickListener(post) }
-            view.cardViewPost.setOnClickListener {clickListenerPost(post) }
+            view.textViewName.setOnClickListener {
+                clickListener(post)
+            }
+            view.imageViewUser.setOnClickListener {
+                clickListener(post)
+            }
+            view.cardViewPost.setOnClickListener {
+                clickListenerPost(post)
+            }
             showUserName(post.userid)
             countComments(post.postid)
         }
     }
-
-
 
 
 }

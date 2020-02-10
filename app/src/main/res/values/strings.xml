@@ -20,7 +20,7 @@
     <string name="have_account">J\'ai un compte</string>
     <string name="failed_authentication">Échec de l\'authentification.</string>
     <string name="mail_mdp_incorr">E-mail ou mot de passe incorrect</string>
-    <string name="signed_in">Vous êtes connectés</string>
+    <string name="signed_in">Vous êtes connecté</string>
     <string name="existing_account">You have an account</string>
     <string name="inscription">Inscription</string>
     <string name="connex">Connexion</string>

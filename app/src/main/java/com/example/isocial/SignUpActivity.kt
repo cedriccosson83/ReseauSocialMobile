@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
+import java.text.SimpleDateFormat
 import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
@@ -22,7 +23,9 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up)
         auth = FirebaseAuth.getInstance()
         subscribebutton.setOnClickListener {
-            if (mailedit.toString().isNotEmpty()) {
+
+            if (mailedit.text.toString().isNotEmpty()) {
+
                 signup()
             }
             else {
@@ -59,7 +62,9 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun registerNewUser(user: FirebaseUser?, fname:String, lname:String, birthdate:String) {
         if (user?.uid != null) {
-            currUser = User(user.uid, user.email, fname, lname, birthdate, null, Date().toString())
+            val sdf = SimpleDateFormat("dd/mm/yyyy")
+            val date = sdf.format(Date())
+            currUser = User(user.uid, user.email, fname, lname, birthdate, date, date)
             val root = database.getReference("users")
             root.child(currUser.userid).setValue(currUser)
 
