@@ -1,5 +1,6 @@
 package com.example.isocial
 
+
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -17,6 +18,8 @@ import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_profile.changeProfilImage
 import kotlinx.android.synthetic.main.activity_profile.dateProfile
 import kotlinx.android.synthetic.main.activity_profile.nameProfile
+import kotlinx.android.synthetic.main.activity_feed.*
+
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -49,6 +52,15 @@ class ProfileActivity : AppCompatActivity() {
                 }
 
             }
+        }
+
+
+        accessNewBTN.setOnClickListener{
+            startActivity(Intent(this, WritePostActivity::class.java))
+        }
+
+        accessFeedBTN.setOnClickListener{
+            startActivity(Intent(this, FeedActivity::class.java))
         }
 
 

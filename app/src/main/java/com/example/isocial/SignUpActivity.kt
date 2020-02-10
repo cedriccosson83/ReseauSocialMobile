@@ -22,9 +22,10 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(saved)
         setContentView(R.layout.activity_sign_up)
         auth = FirebaseAuth.getInstance()
-
         subscribebutton.setOnClickListener {
+
             if (mailedit.text.toString().isNotEmpty()) {
+
                 signup()
             }
             else {

@@ -8,7 +8,6 @@ import android.widget.Toast
 import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_sign_in.*
-import kotlinx.android.synthetic.main.activity_sign_in.email
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.*
 

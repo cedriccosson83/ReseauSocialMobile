@@ -30,9 +30,13 @@ class FeedActivity : AppCompatActivity() {
         recyclerViewFeed.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        buttonPublish.setOnClickListener {
-            val intent = Intent(this, WritePostActivity::class.java)
-            startActivity(intent)
+
+        accessNewBTN.setOnClickListener{
+            startActivity(Intent(this, WritePostActivity::class.java))
+        }
+
+        accessProfileBTN.setOnClickListener{
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
 
 
