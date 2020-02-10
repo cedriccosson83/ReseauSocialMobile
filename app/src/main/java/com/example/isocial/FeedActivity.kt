@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.recycler_view_post_cell.*
 
@@ -46,7 +50,7 @@ class FeedActivity : AppCompatActivity() {
 
     }
 
-    }
+
 
 
     //This function get the posts on the database and show them on the feed
@@ -77,13 +81,14 @@ class FeedActivity : AppCompatActivity() {
             }
         })
 
-
     }
 
     //allows to redirect on the user activity
     private fun userClicked(postItem : Post) {
-        Toast.makeText(this, "Clicked: ${postItem.userid}", Toast.LENGTH_LONG).show()
-        redirectToUserActivity(this,postItem.userid)
+        val intent = Intent(this, ProfileActivity::class.java)
+        val id = auth.currentUser?.uid
+        intent.putExtra("userId", id)
+        startActivity(intent)
     }
 
     private fun postLiked(postItem : Post) {

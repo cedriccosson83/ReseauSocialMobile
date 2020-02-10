@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_post.*
-import kotlinx.android.synthetic.main.activity_post.textViewNamePost
+import kotlinx.android.synthetic.main.recycler_view_post_cell.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -66,13 +66,13 @@ class PostActivity : AppCompatActivity() {
                     post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), value.child("date").value.toString(), value.child("content").value.toString(),likes,null)
                     val postId: String = intent.getStringExtra("post")
                     if(post.postid == postId){
-                        textViewContentPost.text = "${post.content}"
+                        textViewContent2.text = "${post.content}"
                         showUser(post.userid)
-                        showDate(post.date, textViewDatePost)
-                        textViewNamePost.setOnClickListener {
+                        showDate(post.date, textViewDate2)
+                        nameProfile.setOnClickListener {
                             redirectToUserActivity(this@PostActivity, post.userid)
                         }
-                        imageViewUserPost.setOnClickListener {
+                        imageViewUser.setOnClickListener {
                             redirectToUserActivity(this@PostActivity, post.userid)
                         }
                         break
@@ -125,7 +125,7 @@ class PostActivity : AppCompatActivity() {
                 for(value in dataSnapshot.children ) {
                     user = User(value.child("userid").value.toString(), value.child("email").value.toString(), value.child("firstname").value.toString(), value.child("lastname").value.toString(),value.child("birthdate").value.toString(),null,null,null)
                     if(user.userid == userId){
-                        textViewNamePost.text = "${user.firstname} ${user.lastname}"
+                        nameProfile.text = "${user.firstname} ${user.lastname}"
                     }
                 }
             }

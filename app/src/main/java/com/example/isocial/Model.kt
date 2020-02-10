@@ -21,7 +21,7 @@ fun showDate(date : String?, textview: TextView){
 }
 
 fun redirectToUserActivity(context: Context, userID : String){
-    val intent = Intent(context, UserActivity::class.java)
+    val intent = Intent(context, ProfileActivity::class.java)
     var id : String = userID
     intent.putExtra("user", id)
     context.startActivity(intent)
