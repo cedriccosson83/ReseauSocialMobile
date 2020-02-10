@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
-
 import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
@@ -22,9 +21,8 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(saved)
         setContentView(R.layout.activity_sign_up)
         auth = FirebaseAuth.getInstance()
-
         subscribebutton.setOnClickListener {
-            if (mailedit.text.toString().isNotEmpty()) {
+            if (mailedit.toString().isNotEmpty()) {
                 signup()
             }
             else {

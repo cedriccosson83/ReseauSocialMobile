@@ -43,6 +43,14 @@ class WritePostActivity : AppCompatActivity() {
                 Toast.makeText(this, "Utilisateur non trouvé", Toast.LENGTH_LONG).show()
             }
         }
+
+        accessFeedBTN.setOnClickListener{
+            startActivity(Intent(this, FeedActivity::class.java))
+        }
+
+        accessProfileBTN.setOnClickListener{
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
         //readPosts()
     }
 
