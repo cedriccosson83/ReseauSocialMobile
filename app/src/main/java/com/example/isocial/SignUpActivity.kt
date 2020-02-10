@@ -8,8 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import android.content.Intent
 import com.google.firebase.database.FirebaseDatabase
-import kotlinx.android.synthetic.main.activity_sign_in.*
-import kotlinx.android.synthetic.main.activity_sign_up.password
+import java.text.SimpleDateFormat
 import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
@@ -25,7 +24,7 @@ class SignUpActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         subscribebutton.setOnClickListener {
-            if (emaileditText.text.toString().isNotEmpty()) {
+            if (mailedit.text.toString().isNotEmpty()) {
                 signup()
             }
             else {
@@ -36,8 +35,8 @@ class SignUpActivity : AppCompatActivity() {
 
     fun signup() {
         auth.createUserWithEmailAndPassword(
-            emaileditText.text.toString(),
-            passwordeditText.text.toString()
+            mailedit.text.toString(),
+            passwordedit.text.toString()
         ).addOnCompleteListener(this) { task ->
             if (task.isSuccessful) {
                 val user = auth.currentUser
@@ -62,7 +61,9 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun registerNewUser(user: FirebaseUser?, fname:String, lname:String, birthdate:String) {
         if (user?.uid != null) {
-            currUser = User(user.uid, user.email, fname, lname, birthdate, null, Date().toString())
+            val sdf = SimpleDateFormat("dd/mm/yyyy")
+            val date = sdf.format(Date())
+            currUser = User(user.uid, user.email, fname, lname, birthdate, date, date)
             val root = database.getReference("users")
             root.child(currUser.userid).setValue(currUser)
 

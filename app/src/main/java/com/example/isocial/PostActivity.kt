@@ -12,7 +12,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_post.*
-import kotlinx.android.synthetic.main.activity_post.textViewName2
+import kotlinx.android.synthetic.main.activity_post.nameProfile
 
 class PostActivity : AppCompatActivity() {
 
@@ -104,7 +104,7 @@ class PostActivity : AppCompatActivity() {
                 for(value in dataSnapshot.children ) {
                     user = User(value.child("userid").value.toString(), value.child("email").value.toString(), value.child("firstname").value.toString(), value.child("lastname").value.toString(),value.child("birthdate").value.toString(),null,null,null)
                     if(user.userid == userId){
-                        textViewName2.text = "${user.firstname} ${user.lastname}"
+                        nameProfile.text = "${user.firstname} ${user.lastname}"
                     }
                 }
             }
