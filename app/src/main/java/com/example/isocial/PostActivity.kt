@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -12,7 +13,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_post.*
-import kotlinx.android.synthetic.main.activity_post.nameProfile
+import kotlinx.android.synthetic.main.activity_post.textViewNamePost
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PostActivity : AppCompatActivity() {
 
@@ -35,11 +39,19 @@ class PostActivity : AppCompatActivity() {
         val postId: String = intent.getStringExtra("post")
         showComments(postId)
 
+
         buttonPublishComment.setOnClickListener {
             var content:String = editTextComment.text.toString()
-            newComment(postId,content)
+            if(content != ""){
+                newComment(postId,content)
+                editTextComment.setText("")
+                Toast.makeText(this, "Commentaire posté!", Toast.LENGTH_LONG).show()
+            }else{
+                Toast.makeText(this, "Veuillez entrer un commentaire", Toast.LENGTH_LONG).show()
+            }
 
         }
+
     }
 
     //This function allows to show the name of the user
@@ -50,16 +62,25 @@ class PostActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot){
                 var post: Post
                 for(value in dataSnapshot.children ) {
-                    post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), "date def", value.child("content").value.toString(),null,null)
+                    var likes : ArrayList<String> = ArrayList()
+                    post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), value.child("date").value.toString(), value.child("content").value.toString(),likes,null)
                     val postId: String = intent.getStringExtra("post")
                     if(post.postid == postId){
-
-                        textViewContent2.text = "${post.content}"
+                        textViewContentPost.text = "${post.content}"
+                        showUser(post.userid)
+                        showDate(post.date, textViewDatePost)
+                        textViewNamePost.setOnClickListener {
+                            redirectToUserActivity(this@PostActivity, post.userid)
+                        }
+                        imageViewUserPost.setOnClickListener {
+                            redirectToUserActivity(this@PostActivity, post.userid)
+                        }
                         break
                     }
-                    showUser(post.userid)
+
 
                 }
+
             }
             override fun onCancelled(error: DatabaseError) {
                 Log.w("post", "Failed to read value.", error.toException())
@@ -77,14 +98,14 @@ class PostActivity : AppCompatActivity() {
                 for(value in dataSnapshot.children ) {
 
 
-                    var comment : Comment = Comment(value.child("userid").value.toString(), value.child("postId").value.toString(), "date def", value.child("content").value.toString(),null)
+                    var comment : Comment = Comment(value.child("userid").value.toString(), value.child("postId").value.toString(), value.child("date").value.toString(), value.child("content").value.toString(),null)
                     if(comment.postId == postId){
                         comments.add(comment)
                     }
 
                 }
-                comments.reverse()
-                recyclerViewComments.adapter = CommentAdapter(comments)
+                //comments.reverse()
+                recyclerViewComments.adapter = CommentAdapter(comments,{ commentItem : Comment -> userClicked(commentItem) })
                 Log.d("comment", comments.toString())
             }
             override fun onCancelled(error: DatabaseError) {
@@ -104,7 +125,7 @@ class PostActivity : AppCompatActivity() {
                 for(value in dataSnapshot.children ) {
                     user = User(value.child("userid").value.toString(), value.child("email").value.toString(), value.child("firstname").value.toString(), value.child("lastname").value.toString(),value.child("birthdate").value.toString(),null,null,null)
                     if(user.userid == userId){
-                        nameProfile.text = "${user.firstname} ${user.lastname}"
+                        textViewNamePost.text = "${user.firstname} ${user.lastname}"
                     }
                 }
             }
@@ -127,23 +148,21 @@ class PostActivity : AppCompatActivity() {
             Log.w("ERROR", "Couldn't get push key for comments")
             return
         }
-        //val date = LocalDateTime.now()
-        val comment = currentUserID?.let { Comment(it, postId, "date", content, null) }
+        val sdf = SimpleDateFormat("HH:mm:ss dd/MM/yyyy", Locale.getDefault())
+        val currentDateandTime: String = sdf.format(Date())
+
+        val comment = currentUserID?.let { Comment(it, postId, currentDateandTime, content, null) }
         dbComments.child(newId).setValue(comment)
 
 
 
     }
-    private fun newPost(userId: String, date: String, content: String) {
 
-        val dbPosts = database.getReference("posts")
-        val newId = dbPosts.push().key
-        if (newId == null) {
-            Log.w("ERROR", "Couldn't get push key for posts")
-            return
-        }
-
-        val post = Post(userId, newId, date, content, ArrayList(), ArrayList())
-        dbPosts.child(newId).setValue(post)
+    //allows to redirect on the user activity
+    private fun userClicked(commentItem : Comment) {
+        Toast.makeText(this, "Clicked: ${commentItem.userid}", Toast.LENGTH_LONG).show()
+        redirectToUserActivity(this,commentItem.userid)
     }
+
+
 }

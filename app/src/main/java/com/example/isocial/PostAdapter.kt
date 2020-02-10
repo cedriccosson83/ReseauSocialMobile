@@ -10,15 +10,12 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.recycler_view_post_cell.*
+import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.recycler_view_post_cell.view.*
+import kotlin.collections.ArrayList
 
 
-class PostAdapter(
-    val posts: ArrayList<Post>,
-    val clickListener: (Post) -> Unit,
-    val clickListenerPost: (Post) -> Unit
-) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit, val clickListenerPost: (Post) -> Unit, val clickListenerLike: (Post) -> Unit): RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostAdapter.PostViewHolder {
@@ -33,7 +30,7 @@ class PostAdapter(
 
     override fun onBindViewHolder(holder: PostAdapter.PostViewHolder, position: Int) {
         val post = posts[position]
-        holder.bind(post, clickListener, clickListenerPost)
+        holder.bind(post,clickListener, clickListenerPost, clickListenerLike)
     }
 
     class PostViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -73,6 +70,15 @@ class PostAdapter(
 
         }
 
+        fun countLikes(post: Post) {
+
+            var array: ArrayList<String> = post.likes
+            var count: Int = array.size
+            view.textViewLikeNumber.text="Likes(${count})"
+            Log.d("like", array.toString())
+
+        }
+
         fun countComments(postId: String) {
 
             val myRef = database.getReference("comments")
@@ -107,21 +113,18 @@ class PostAdapter(
 
         }
 
-        fun bind(post: Post, clickListener: (Post) -> Unit, clickListenerPost: (Post) -> Unit) {
+
+        fun bind(post: Post, clickListener: (Post) -> Unit, clickListenerPost: (Post) -> Unit, clickListenerLike: (Post) -> Unit){
             //view.textViewName.text = "${post.userid}"
             view.textViewContent.text = "${post.content}"
-            view.textViewDate.text = "${post.date}"
-            view.textViewName.setOnClickListener {
-                clickListener(post)
-            }
-            view.imageViewUser.setOnClickListener {
-                clickListener(post)
-            }
-            view.cardViewPost.setOnClickListener {
-                clickListenerPost(post)
-            }
+            showDate(post.date, view.textViewDate)
+            view.textViewName.setOnClickListener { clickListener(post) }
+            view.imageViewUserPost.setOnClickListener { clickListener(post) }
+            view.cardViewPost.setOnClickListener {clickListenerPost(post) }
+            view.imageViewStar.setOnClickListener { clickListenerLike(post) }
             showUserName(post.userid)
             countComments(post.postid)
+            countLikes(post)
         }
     }
 

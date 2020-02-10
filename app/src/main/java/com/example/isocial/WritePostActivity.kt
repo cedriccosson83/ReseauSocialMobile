@@ -63,10 +63,11 @@ class WritePostActivity : AppCompatActivity() {
             return
         }
 
-        val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+        val sdf = SimpleDateFormat("HH:mm:ss dd/MM/yyyy", Locale.getDefault())
         val currentDateandTime: String = sdf.format(Date())
         Log.d("heure", currentDateandTime)
-        val post = Post(userId, newId, currentDateandTime, content, ArrayList(), ArrayList())
+        val array : ArrayList<String> = ArrayList()
+        val post = Post(userId, newId, currentDateandTime, content,array, ArrayList())
         dbPosts.child(newId).setValue(post)
     }
 

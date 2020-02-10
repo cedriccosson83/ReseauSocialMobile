@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.recycler_view_comment_cell.view.*
 import kotlinx.android.synthetic.main.recycler_view_post_cell.view.*
 
 
-class CommentAdapter(val comments: ArrayList<Comment>): RecyclerView.Adapter<CommentAdapter.CommentViewHolder>(){
+class CommentAdapter(val comments: ArrayList<Comment>,val clickListener: (Comment) -> Unit): RecyclerView.Adapter<CommentAdapter.CommentViewHolder>(){
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -30,7 +30,7 @@ class CommentAdapter(val comments: ArrayList<Comment>): RecyclerView.Adapter<Com
 
     override fun onBindViewHolder(holder: CommentAdapter.CommentViewHolder, position: Int) {
         val comment = comments[position]
-        holder.bind(comment)
+        holder.bind(comment, clickListener)
     }
 
 
@@ -62,10 +62,12 @@ class CommentAdapter(val comments: ArrayList<Comment>): RecyclerView.Adapter<Com
 
 
         }
-        fun bind(comment: Comment){
+        fun bind(comment: Comment, clickListener: (Comment) -> Unit){
             view.textViewContentComment.text = "${comment.content}"
+            showDate(comment.date, view.textViewDateComment)
             showUserName(comment.userid)
-
+            view.textViewNameComment.setOnClickListener { clickListener(comment) }
+            view.imageView.setOnClickListener { clickListener(comment) }
         }
     }
 

@@ -8,7 +8,7 @@ data class Post (
     var postid: String = "",
     var date: String? = "",
     var content: String? = "",
-    var likes: ArrayList<User>? = ArrayList(),
+    var likes: ArrayList<String> = ArrayList(),
     var comments: ArrayList<Comment>? = ArrayList()
 ) {
     fun toMap(): Map<String, Any?> {
