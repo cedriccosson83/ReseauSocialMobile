@@ -1,6 +1,8 @@
 package com.example.isocial
 
+import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -57,6 +59,21 @@ class ProfileActivity : AppCompatActivity() {
         }
 
 
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK ){
+            if(data?.data == null){
+                val bitmap = data?.extras?.get("data") as? Bitmap
+                bitmap?.let{
+                    changeProfilImage.setImageBitmap(it)
+                }
+            }else{
+                changeProfilImage.setImageURI(data?.data)
+
+            }
+
+        }
     }
 
 
