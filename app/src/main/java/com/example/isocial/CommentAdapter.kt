@@ -64,6 +64,7 @@ class CommentAdapter(val comments: ArrayList<Comment>): RecyclerView.Adapter<Com
         }
         fun bind(comment: Comment){
             view.textViewContentComment.text = "${comment.content}"
+            showDate(comment.date, view.textViewDateComment)
             showUserName(comment.userid)
 
         }

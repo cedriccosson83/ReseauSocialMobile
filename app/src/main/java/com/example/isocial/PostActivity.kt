@@ -13,6 +13,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_post.*
 import kotlinx.android.synthetic.main.activity_post.textViewName2
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PostActivity : AppCompatActivity() {
 
@@ -50,14 +53,16 @@ class PostActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot){
                 var post: Post
                 for(value in dataSnapshot.children ) {
-                    post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), "date def", value.child("content").value.toString(),null,null)
+                    post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), value.child("date").value.toString(), value.child("content").value.toString(),null,null)
                     val postId: String = intent.getStringExtra("post")
                     if(post.postid == postId){
 
                         textViewContent2.text = "${post.content}"
+                        showUser(post.userid)
+                        showDate(post.date, textViewDatePost)
                         break
                     }
-                    showUser(post.userid)
+
 
                 }
             }
@@ -77,13 +82,13 @@ class PostActivity : AppCompatActivity() {
                 for(value in dataSnapshot.children ) {
 
 
-                    var comment : Comment = Comment(value.child("userid").value.toString(), value.child("postId").value.toString(), "date def", value.child("content").value.toString(),null)
+                    var comment : Comment = Comment(value.child("userid").value.toString(), value.child("postId").value.toString(), value.child("date").value.toString(), value.child("content").value.toString(),null)
                     if(comment.postId == postId){
                         comments.add(comment)
                     }
 
                 }
-                comments.reverse()
+                //comments.reverse()
                 recyclerViewComments.adapter = CommentAdapter(comments)
                 Log.d("comment", comments.toString())
             }
@@ -127,23 +132,14 @@ class PostActivity : AppCompatActivity() {
             Log.w("ERROR", "Couldn't get push key for comments")
             return
         }
-        //val date = LocalDateTime.now()
-        val comment = currentUserID?.let { Comment(it, postId, "date", content, null) }
+        val sdf = SimpleDateFormat("HH:mm:ss dd/MM/yyyy", Locale.getDefault())
+        val currentDateandTime: String = sdf.format(Date())
+
+        val comment = currentUserID?.let { Comment(it, postId, currentDateandTime, content, null) }
         dbComments.child(newId).setValue(comment)
 
 
 
     }
-    private fun newPost(userId: String, date: String, content: String) {
 
-        val dbPosts = database.getReference("posts")
-        val newId = dbPosts.push().key
-        if (newId == null) {
-            Log.w("ERROR", "Couldn't get push key for posts")
-            return
-        }
-
-        val post = Post(userId, newId, date, content, ArrayList(), ArrayList())
-        dbPosts.child(newId).setValue(post)
-    }
 }

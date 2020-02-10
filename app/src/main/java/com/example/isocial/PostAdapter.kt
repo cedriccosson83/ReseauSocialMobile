@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -12,6 +13,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.recycler_view_post_cell.*
 import kotlinx.android.synthetic.main.recycler_view_post_cell.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit, val clickListenerPost: (Post) -> Unit): RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
@@ -85,10 +89,13 @@ class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit
 
 
         }
+
+
         fun bind(post: Post, clickListener: (Post) -> Unit, clickListenerPost: (Post) -> Unit){
             //view.textViewName.text = "${post.userid}"
             view.textViewContent.text = "${post.content}"
-            view.textViewDate.text = "${post.date}"
+            showDate(post.date, view.textViewDate)
+
             view.textViewName.setOnClickListener { clickListener(post) }
             view.imageViewUser.setOnClickListener { clickListener(post) }
             view.cardViewPost.setOnClickListener {clickListenerPost(post) }

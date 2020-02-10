@@ -82,7 +82,7 @@ class FeedActivity : AppCompatActivity() {
         intent.putExtra("name", name)
         //intent.putExtra("post", post)
         startActivity(intent)
-        Toast.makeText(this, "Clicked: ${postItem.postid}", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Clicked: ${name}", Toast.LENGTH_LONG).show()
     }
 
 

@@ -48,6 +48,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@mipmap/ic_launcher_round" />
+
+        <TextView
+            android:id="@+id/textViewDatePost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="@string/date"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewName2"
+            app:layout_constraintStart_toEndOf="@+id/textViewName2"
+            app:layout_constraintTop_toTopOf="@+id/textViewName2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
