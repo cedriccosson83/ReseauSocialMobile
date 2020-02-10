@@ -13,8 +13,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_feed.*
-import kotlinx.android.synthetic.main.activity_post.*
-import kotlinx.android.synthetic.main.activity_user.*
 import kotlinx.android.synthetic.main.recycler_view_post_cell.*
 
 
@@ -32,9 +30,13 @@ class FeedActivity : AppCompatActivity() {
         showPosts()
         recyclerViewFeed.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
 
-        buttonPublish.setOnClickListener {
-            val intent = Intent(this, WritePostActivity::class.java)
-            startActivity(intent)
+
+        accessNewBTN.setOnClickListener{
+            startActivity(Intent(this, WritePostActivity::class.java))
+        }
+
+        accessProfileBTN.setOnClickListener{
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
 
     }
