@@ -6,25 +6,14 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.DocumentReference
-import com.google.android.gms.tasks.Task
-import android.os.Message
 import android.provider.MediaStore
 import android.widget.Toast
-import com.google.android.gms.tasks.Continuation
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 import java.util.*
-import androidx.annotation.NonNull
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import com.google.firebase.auth.FirebaseAuth
 
 
