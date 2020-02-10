@@ -30,20 +30,7 @@ class WritePostActivity : AppCompatActivity() {
         setContentView(R.layout.activity_write)
 
         auth = FirebaseAuth.getInstance()
-        postImage.setOnClickListener {
-            val imagefromgalleryIntent = Intent(Intent.ACTION_PICK)
-            imagefromgalleryIntent.setType("image/png")
 
-            val imagefromcameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-            val chooseIntent = Intent.createChooser(imagefromgalleryIntent, "Gallery")
-            chooseIntent.putExtra(
-                Intent.EXTRA_INITIAL_INTENTS,
-                arrayOf(imagefromcameraIntent)
-            )
-
-            startActivityForResult(chooseIntent, 11)
-        }
         publishBTN.setOnClickListener{
             val userid = auth.currentUser?.uid
 
@@ -95,21 +82,6 @@ class WritePostActivity : AppCompatActivity() {
         dbPosts.child(newId).setValue(post)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK ){
-            if(data?.data == null){
-                val bitmap = data?.extras?.get("data") as? Bitmap
-                bitmap?.let{
-                    postImage.setImageBitmap(it)
-                }
-            }else{
-                postImage.setImageURI(data?.data)
-
-            }
-
-        }
-    }
 
 
 }

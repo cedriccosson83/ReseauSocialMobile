@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -112,7 +113,20 @@ class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit
 
         }
 
+        fun showLike(post: Post){
+            auth = FirebaseAuth.getInstance()
+            val currentUserID = auth.currentUser?.uid
+            val likes = post.likes
+            Log.d("like", likes.toString())
+            if(likes?.all { it != currentUserID } == true) {
+                //likes.add(currentUserID ?: "")
+                view.imageViewStar.setImageResource(R.drawable.like)
+            }else{
+                //likes.remove(currentUserID)
+                view.imageViewStar.setImageResource(R.drawable.dislike)
 
+            }
+        }
         fun bind(post: Post, clickListener: (Post) -> Unit, clickListenerPost: (Post) -> Unit, clickListenerLike: (Post) -> Unit){
             //view.textViewName.text = "${post.userid}"
             view.textViewContent.text = "${post.content}"
@@ -122,6 +136,7 @@ class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit
             view.cardViewPost.setOnClickListener {clickListenerPost(post) }
             view.imageViewStar.setOnClickListener { clickListenerLike(post) }
             showUserName(post.userid)
+            showLike(post)
             countComments(post.postid)
             countLikes(post)
         }

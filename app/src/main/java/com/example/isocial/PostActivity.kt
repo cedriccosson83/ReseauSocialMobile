@@ -45,7 +45,10 @@ class PostActivity : AppCompatActivity() {
             startActivity(Intent(this, FeedActivity::class.java))
         }
         accessProfileBTN.setOnClickListener{
-            startActivity(Intent(this, ProfileActivity::class.java))
+            val intent = Intent(this, ProfileActivity::class.java)
+            val id = auth.currentUser?.uid
+            intent.putExtra("userId", id)
+            startActivity(intent)
         }
         recyclerViewComments.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerViewComments.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
