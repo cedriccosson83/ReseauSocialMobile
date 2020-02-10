@@ -63,7 +63,10 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(Intent(this, FeedActivity::class.java))
         }
 
-
+        logoutbutton.setOnClickListener {
+            //editor.clear().commit()
+            startActivity(Intent(this, SignInActivity::class.java))
+        }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
