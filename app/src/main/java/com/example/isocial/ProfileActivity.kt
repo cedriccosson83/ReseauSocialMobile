@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.activity_profile.changeProfilImage
 import kotlinx.android.synthetic.main.activity_profile.dateProfile
 import kotlinx.android.synthetic.main.activity_profile.nameProfile
-import kotlinx.android.synthetic.main.activity_feed.*
+
 
 
 class ProfileActivity : AppCompatActivity() {

@@ -26,6 +26,8 @@ class FeedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
 
+        auth = FirebaseAuth.getInstance()
+
         showPosts()
         recyclerViewFeed.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -36,7 +38,10 @@ class FeedActivity : AppCompatActivity() {
         }
 
         accessProfileBTN.setOnClickListener{
-            startActivity(Intent(this, ProfileActivity::class.java))
+            val intent = Intent(this, ProfileActivity::class.java)
+            val id = auth.currentUser?.uid
+            intent.putExtra("userId", id)
+            startActivity(intent)
         }
 
 
