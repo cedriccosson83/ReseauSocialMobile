@@ -68,11 +68,8 @@ class FeedActivity : AppCompatActivity() {
 
     //allows to redirect on the user activity
     private fun userClicked(postItem : Post) {
-        val intent = Intent(this, UserActivity::class.java)
-        var id : String = postItem.userid
-        intent.putExtra("user", id)
-        startActivity(intent)
         Toast.makeText(this, "Clicked: ${postItem.userid}", Toast.LENGTH_LONG).show()
+        redirectToUserActivity(this,postItem.userid)
     }
 
     //allow to redirect on the post activity

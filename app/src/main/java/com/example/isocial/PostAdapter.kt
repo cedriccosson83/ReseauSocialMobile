@@ -95,7 +95,6 @@ class PostAdapter(val posts: ArrayList<Post>,  val clickListener: (Post) -> Unit
             //view.textViewName.text = "${post.userid}"
             view.textViewContent.text = "${post.content}"
             showDate(post.date, view.textViewDate)
-
             view.textViewName.setOnClickListener { clickListener(post) }
             view.imageViewUser.setOnClickListener { clickListener(post) }
             view.cardViewPost.setOnClickListener {clickListenerPost(post) }

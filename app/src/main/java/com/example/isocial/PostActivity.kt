@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -38,11 +39,13 @@ class PostActivity : AppCompatActivity() {
         val postId: String = intent.getStringExtra("post")
         showComments(postId)
 
+
         buttonPublishComment.setOnClickListener {
             var content:String = editTextComment.text.toString()
             newComment(postId,content)
 
         }
+
     }
 
     //This function allows to show the name of the user
@@ -56,15 +59,21 @@ class PostActivity : AppCompatActivity() {
                     post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), value.child("date").value.toString(), value.child("content").value.toString(),null,null)
                     val postId: String = intent.getStringExtra("post")
                     if(post.postid == postId){
-
                         textViewContent2.text = "${post.content}"
                         showUser(post.userid)
                         showDate(post.date, textViewDatePost)
+                        textViewName2.setOnClickListener {
+                            redirectToUserActivity(this@PostActivity, post.userid)
+                        }
+                        imageViewUser.setOnClickListener {
+                            redirectToUserActivity(this@PostActivity, post.userid)
+                        }
                         break
                     }
 
 
                 }
+
             }
             override fun onCancelled(error: DatabaseError) {
                 Log.w("post", "Failed to read value.", error.toException())
@@ -89,7 +98,7 @@ class PostActivity : AppCompatActivity() {
 
                 }
                 //comments.reverse()
-                recyclerViewComments.adapter = CommentAdapter(comments)
+                recyclerViewComments.adapter = CommentAdapter(comments,{ commentItem : Comment -> userClicked(commentItem) })
                 Log.d("comment", comments.toString())
             }
             override fun onCancelled(error: DatabaseError) {
@@ -141,5 +150,12 @@ class PostActivity : AppCompatActivity() {
 
 
     }
+
+    //allows to redirect on the user activity
+    private fun userClicked(commentItem : Comment) {
+        Toast.makeText(this, "Clicked: ${commentItem.userid}", Toast.LENGTH_LONG).show()
+        redirectToUserActivity(this,commentItem.userid)
+    }
+
 
 }
