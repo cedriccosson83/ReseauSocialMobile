@@ -1,17 +1,14 @@
 package com.example.isocial
 
+import android.content.ClipData.Item
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_feed.*
 import kotlinx.android.synthetic.main.recycler_view_post_cell.*
 
@@ -31,6 +28,7 @@ class FeedActivity : AppCompatActivity() {
         recyclerViewFeed.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false)
 
 
+
         accessNewBTN.setOnClickListener{
             startActivity(Intent(this, WritePostActivity::class.java))
         }
@@ -38,6 +36,8 @@ class FeedActivity : AppCompatActivity() {
         accessProfileBTN.setOnClickListener{
             startActivity(Intent(this, ProfileActivity::class.java))
         }
+
+
 
     }
 
@@ -51,11 +51,18 @@ class FeedActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot){
                 val posts : ArrayList<Post> = ArrayList<Post>()
                 for(value in dataSnapshot.children ) {
-                    var post : Post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), value.child("date").value.toString(), value.child("content").value.toString(),null,null)
+
+                    var arrayLikes :ArrayList<String> = ArrayList()
+                    for (childLike in value.child("likes").children){
+                        var userId : String = childLike.value.toString()
+                        arrayLikes.add(userId)
+                    }
+
+                    var post : Post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), value.child("date").value.toString(), value.child("content").value.toString(),arrayLikes,null)
                     posts.add(post)
                 }
                 posts.reverse()
-                recyclerViewFeed.adapter = PostAdapter(posts,  { postItem : Post -> userClicked(postItem) }, { postItem : Post -> postClicked(postItem) } )
+                recyclerViewFeed.adapter = PostAdapter(posts,  { postItem : Post -> userClicked(postItem) }, { postItem : Post -> postClicked(postItem) },{ post : Post -> postLiked(post) } )
                 Log.d("post", posts.toString())
             }
             override fun onCancelled(error: DatabaseError) {
@@ -70,6 +77,26 @@ class FeedActivity : AppCompatActivity() {
     private fun userClicked(postItem : Post) {
         Toast.makeText(this, "Clicked: ${postItem.userid}", Toast.LENGTH_LONG).show()
         redirectToUserActivity(this,postItem.userid)
+    }
+
+    private fun postLiked(postItem : Post) {
+
+        auth = FirebaseAuth.getInstance()
+        val currentUserID = auth.currentUser?.uid
+
+        val myRef = database.getReference("posts")
+
+        val likes = postItem.likes
+        Log.d("like", likes.toString())
+        if(likes?.all { it != currentUserID } == true) {
+            likes.add(currentUserID ?: "")
+            myRef.child(postItem.postid).child("likes").setValue(likes)
+            Toast.makeText(this, "Publication aimée!", Toast.LENGTH_LONG).show()
+        }else{
+            likes.remove(currentUserID)
+            myRef.child(postItem.postid).child("likes").setValue(likes)
+            Toast.makeText(this, "Vous n'aimez plus la publication!", Toast.LENGTH_LONG).show()
+        }
     }
 
     //allow to redirect on the post activity

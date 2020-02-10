@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_post.*
-import kotlinx.android.synthetic.main.activity_post.textViewName2
+import kotlinx.android.synthetic.main.activity_post.textViewNamePost
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -42,7 +42,13 @@ class PostActivity : AppCompatActivity() {
 
         buttonPublishComment.setOnClickListener {
             var content:String = editTextComment.text.toString()
-            newComment(postId,content)
+            if(content != ""){
+                newComment(postId,content)
+                editTextComment.setText("")
+                Toast.makeText(this, "Commentaire posté!", Toast.LENGTH_LONG).show()
+            }else{
+                Toast.makeText(this, "Veuillez entrer un commentaire", Toast.LENGTH_LONG).show()
+            }
 
         }
 
@@ -56,16 +62,17 @@ class PostActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot){
                 var post: Post
                 for(value in dataSnapshot.children ) {
-                    post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), value.child("date").value.toString(), value.child("content").value.toString(),null,null)
+                    var likes : ArrayList<String> = ArrayList()
+                    post = Post(value.child("userid").value.toString(), value.child("postid").value.toString(), value.child("date").value.toString(), value.child("content").value.toString(),likes,null)
                     val postId: String = intent.getStringExtra("post")
                     if(post.postid == postId){
-                        textViewContent2.text = "${post.content}"
+                        textViewContentPost.text = "${post.content}"
                         showUser(post.userid)
                         showDate(post.date, textViewDatePost)
-                        textViewName2.setOnClickListener {
+                        textViewNamePost.setOnClickListener {
                             redirectToUserActivity(this@PostActivity, post.userid)
                         }
-                        imageViewUser.setOnClickListener {
+                        imageViewUserPost.setOnClickListener {
                             redirectToUserActivity(this@PostActivity, post.userid)
                         }
                         break
@@ -118,7 +125,7 @@ class PostActivity : AppCompatActivity() {
                 for(value in dataSnapshot.children ) {
                     user = User(value.child("userid").value.toString(), value.child("email").value.toString(), value.child("firstname").value.toString(), value.child("lastname").value.toString(),value.child("birthdate").value.toString(),null,null,null)
                     if(user.userid == userId){
-                        textViewName2.text = "${user.firstname} ${user.lastname}"
+                        textViewNamePost.text = "${user.firstname} ${user.lastname}"
                     }
                 }
             }
