@@ -18,16 +18,5 @@ data class Post (
             "content" to content,
             "likes" to likes
         )
-
-        /*
-        class Post{
-
-    var user : User ?= null
-    var textContent : String ?= null
-
-    constructor(user: User?, textContent: String?) {
-        this.user = user
-        this.textContent = textContent
-        */
     }
 }
